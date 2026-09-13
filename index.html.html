@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>九载十迁 · 文理学院旧址研学游戏</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📜</text></svg>">
+<style>
+/* ===== 全局重置与基础 ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#f4e8d0;
+  --paper-dark:#e8d9b8;
+  --ink:#2c1810;
+  --ink-light:#5a4030;
+  --red:#8b2500;
+  --red-bright:#c41e3a;
+  --green:#2d4a3e;
+  --gold:#b8860b;
+  --border:#8b7355;
+  --shadow:rgba(44,24,16,0.25);
+}
+html{font-size:16px;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:'Noto Serif SC','Songti SC','SimSun',serif;
+  background:var(--paper);
+  color:var(--ink);
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+}
+/* 旧纸张纹理背景 */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(139,115,85,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(139,37,0,0.05) 0%, transparent 50%),
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,115,85,0.015) 2px, rgba(139,115,85,0.015) 4px);
+  pointer-events:none;
+  z-index:0;
+}
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  box-shadow:inset 0 0 120px rgba(44,24,16,0.15);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ===== 顶部导航栏 ===== */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:linear-gradient(180deg, var(--ink) 0%, #3d2914 100%);
+  color:var(--paper);
+  padding:10px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:3px solid var(--red);
+  box-shadow:0 2px 12px var(--shadow);
+}
+.topbar-title{font-size:1rem;font-weight:700;letter-spacing:2px;display:flex;align-items:center;gap:8px}
+.topbar-title .seal-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border:2px solid var(--red-bright);border-radius:4px;
+  color:var(--red-bright);font-size:14px;font-weight:900;
+  transform:rotate(-5deg);
+}
+.topbar-stamps{font-size:0.8rem;display:flex;align-items:center;gap:6px;opacity:0.9}
+.topbar-stamps .count{color:var(--gold);font-weight:700;font-size:1rem}
+
+/* ===== 主容器 ===== */
+.app{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 0 40px;min-height:calc(100vh - 50px)}
+.view{display:none;animation:fadeIn 0.5s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== 通用组件 ===== */
+.btn{
+  display:inline-block;width:100%;
+  padding:14px 20px;
+  font-family:'Noto Serif SC',serif;font-size:1rem;font-weight:600;
+  text-align:center;cursor:pointer;
+  border:2px solid var(--ink);border-radius:4px;
+  background:var(--paper);color:var(--ink);
+  transition:all 0.2s;position:relative;overflow:hidden;
+  text-decoration:none;
+}
+.btn:hover,.btn:active{background:var(--ink);color:var(--paper);transform:translateY(-1px)}
+.btn-primary{background:var(--red);color:var(--paper);border-color:var(--red)}
+.btn-primary:hover,.btn-primary:active{background:#6b1c00;border-color:#6b1c00}
+.btn-ghost{background:transparent;border-color:var(--border);color:var(--ink-light)}
+.btn-group{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+
+.card{
+  background:rgba(255,250,235,0.7);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:20px;
+  margin:16px;
+  box-shadow:0 4px 16px var(--shadow);
+  position:relative;
+}
+.card::before{
+  content:'';position:absolute;top:6px;left:6px;right:6px;bottom:6px;
+  border:1px solid rgba(139,115,85,0.3);border-radius:4px;
+  pointer-events:none;
+}
+
+.tag{
+  display:inline-block;padding:3px 10px;border-radius:2px;
+  font-size:0.75rem;font-weight:600;letter-spacing:1px;
+  margin-bottom:10px;
+}
+.tag-urgent{background:var(--red);color:#fff}
+.tag-calm{background:var(--green);color:#fff}
+.tag-wonder{background:var(--gold);color:#fff}
+
+/* ===== 首页 / 起点 ===== */
+.hero{
+  text-align:center;padding:40px 24px 30px;
+  position:relative;
+}
+.hero-title{
+  font-size:2.2rem;font-weight:900;letter-spacing:6px;
+  color:var(--ink);line-height:1.3;
+  text-shadow:1px 1px 0 rgba(139,115,85,0.3);
+  margin-bottom:8px;
+}
+.hero-subtitle{
+  font-size:0.9rem;color:var(--ink-light);letter-spacing:4px;
+  margin-bottom:24px;
+}
+.hero-divider{
+  width:60px;height:2px;background:var(--red);margin:0 auto 24px;
+  position:relative;
+}
+.hero-divider::before,.hero-divider::after{
+  content:'';position:absolute;top:50%;width:6px;height:6px;
+  background:var(--red);border-radius:50%;transform:translateY(-50%);
+}
+.hero-divider::before{left:-12px}
+.hero-divider::after{right:-12px}
+.hero-desc{
+  font-size:0.9rem;line-height:1.9;color:var(--ink-light);
+  text-align:justify;margin-bottom:20px;
+}
+.hero-meta{
+  display:flex;justify-content:center;gap:24px;margin:20px 0;
+  font-size:0.8rem;color:var(--ink-light);
+}
+.hero-meta div{text-align:center}
+.hero-meta .num{font-size:1.4rem;font-weight:900;color:var(--red);display:block}
+
+/* ===== 动线地图 ===== */
+.map-header{text-align:center;padding:24px 16px 12px}
+.map-header h2{font-size:1.3rem;font-weight:700;letter-spacing:3px;margin-bottom:6px}
+.map-header p{font-size:0.8rem;color:var(--ink-light)}
+.route-map{
+  position:relative;padding:20px 16px;
+  margin:0 16px;
+}
+.route-line{
+  position:absolute;left:50%;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg, var(--red) 0%, var(--border) 100%);
+  transform:translateX(-50%);
+  opacity:0.4;
+}
+.route-node{
+  position:relative;display:flex;align-items:flex-start;
+  margin-bottom:24px;min-height:60px;
+}
+.route-node:nth-child(odd){flex-direction:row}
+.route-node:nth-child(even){flex-direction:row-reverse}
+.node-dot{
+  position:absolute;left:50%;transform:translateX(-50%);
+  width:36px;height:36px;border-radius:50%;
+  background:var(--paper);border:3px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.8rem;font-weight:900;color:var(--ink-light);
+  z-index:2;transition:all 0.3s;
+}
+.route-node.current .node-dot{
+  border-color:var(--red);background:var(--red);color:#fff;
+  box-shadow:0 0 0 6px rgba(139,37,0,0.2);
+  animation:pulse 2s infinite;
+}
+.route-node.completed .node-dot{
+  border-color:var(--green);background:var(--green);color:#fff;
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 6px rgba(139,37,0,0.2)}50%{box-shadow:0 0 0 12px rgba(139,37,0,0)}}
+.node-content{
+  width:calc(50% - 30px);
+  background:rgba(255,250,235,0.8);
+  border:1px solid var(--border);border-radius:6px;
+  padding:10px 12px;
+  box-shadow:0 2px 8px var(--shadow);
+}
+.route-node:nth-child(odd) .node-content{margin-right:auto;text-align:right}
+.route-node:nth-child(even) .node-content{margin-left:auto;text-align:left}
+.node-name{font-size:0.9rem;font-weight:700;color:var(--ink)}
+.node-desc{font-size:0.7rem;color:var(--ink-light);margin-top:2px}
+.node-status{font-size:0.65rem;margin-top:4px;font-weight:600}
+.route-node.current .node-status{color:var(--red)}
+.route-node.completed .node-status{color:var(--green)}
+
+/* ===== 场景剧情 ===== */
+.scene-header{
+  padding:20px 16px 12px;text-align:center;
+  border-bottom:1px dashed var(--border);
+  margin:0 16px 16px;
+}
+.scene-location{font-size:0.75rem;color:var(--red);letter-spacing:3px;font-weight:600}
+.scene-title{font-size:1.4rem;font-weight:900;margin:6px 0;letter-spacing:2px}
+.scene-year{font-size:0.8rem;color:var(--ink-light)}
+.scene-bg{
+  margin:0 16px 16px;height:140px;border-radius:6px;
+  background:linear-gradient(135deg, #3d2914 0%, #5a4030 50%, #8b7355 100%);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.scene-bg::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 40%, rgba(255,200,100,0.15) 0%, transparent 60%);
+}
+.scene-bg-icon{font-size:3rem;opacity:0.6;position:relative;z-index:1}
+.narration{
+  font-size:0.9rem;line-height:2;color:var(--ink);
+  text-align:justify;padding:0 20px;
+  font-style:italic;
+}
+.narration .speaker{
+  font-weight:700;color:var(--red);font-style:normal;
+  display:block;margin-top:12px;margin-bottom:4px;
+}
+.narration .dialogue{
+  padding-left:16px;border-left:3px solid var(--gold);
+  margin:8px 0;font-style:normal;
+}
+
+/* ===== 骰子 ===== */
+.dice-section{text-align:center;padding:30px 16px}
+.dice-section h3{font-size:1.1rem;margin-bottom:20px;letter-spacing:2px}
+.dice-hint{font-size:0.8rem;color:var(--ink-light);margin-bottom:24px}
+.dice-container{
+  width:100px;height:100px;margin:0 auto 30px;
+  perspective:600px;
+}
+.dice{
+  width:100%;height:100%;position:relative;
+  transform-style:preserve-3d;
+  transition:transform 2s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.dice.rolling{animation:diceShake 0.1s infinite}
+@keyframes diceShake{0%,100%{transform:translateX(0) rotate(0)}25%{transform:translateX(-3px) rotate(-2deg)}75%{transform:translateX(3px) rotate(2deg)}}
+.dice-face{
+  position:absolute;width:100px;height:100px;
+  background:linear-gradient(135deg, #d4a574 0%, #b8860b 100%);
+  border:2px solid #8b6914;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.5rem;font-weight:900;color:#5a3a10;
+  box-shadow:inset 0 0 20px rgba(90,58,16,0.3);
+}
+.dice-face.front{transform:translateZ(50px)}
+.dice-face.back{transform:rotateY(180deg) translateZ(50px)}
+.dice-face.right{transform:rotateY(90deg) translateZ(50px)}
+.dice-face.left{transform:rotateY(-90deg) translateZ(50px)}
+.dice-face.top{transform:rotateX(90deg) translateZ(50px)}
+.dice-face.bottom{transform:rotateX(-90deg) translateZ(50px)}
+.dice-result{
+  margin-top:20px;padding:16px;
+  background:rgba(255,250,235,0.9);
+  border:2px solid var(--border);border-radius:6px;
+  display:none;
+}
+.dice-result.show{display:block;animation:stampIn 0.5s ease}
+.dice-result .result-type{font-size:1.2rem;font-weight:900;margin-bottom:8px}
+.dice-result .result-text{font-size:0.85rem;line-height:1.8;color:var(--ink-light)}
+
+/* ===== 选择分支 ===== */
+.branch-section{padding:16px}
+.branch-prompt{
+  font-size:0.9rem;line-height:1.9;margin-bottom:20px;
+  padding:16px;background:rgba(139,37,0,0.05);
+  border-left:4px solid var(--red);border-radius:0 4px 4px 0;
+}
+.choice-btn{
+  display:block;width:100%;text-align:left;
+  padding:16px 18px;margin-bottom:12px;
+  background:rgba(255,250,235,0.9);
+  border:2px solid var(--border);border-radius:6px;
+  font-family:'Noto Serif SC',serif;font-size:0.9rem;line-height:1.6;
+  cursor:pointer;transition:all 0.2s;color:var(--ink);
+  position:relative;
+}
+.choice-btn:hover,.choice-btn:active{
+  border-color:var(--red);background:rgba(139,37,0,0.08);
+  transform:translateX(4px);
+}
+.choice-btn .choice-label{
+  display:inline-block;width:24px;height:24px;line-height:24px;
+  text-align:center;background:var(--ink);color:var(--paper);
+  border-radius:50%;font-size:0.75rem;font-weight:700;
+  margin-right:10px;vertical-align:middle;
+}
+.choice-outcome{
+  display:none;margin-top:16px;padding:16px;
+  background:rgba(45,74,62,0.08);border:1px solid var(--green);
+  border-radius:6px;font-size:0.85rem;line-height:1.8;
+}
+.choice-outcome.show{display:block;animation:fadeIn 0.5s}
+.choice-outcome .stamp-earned{
+  display:inline-block;margin-top:10px;padding:4px 12px;
+  background:var(--green);color:#fff;border-radius:2px;
+  font-size:0.75rem;font-weight:600;
+}
+.clue-unlock{
+  margin-top:12px;padding:10px 14px;
+  background:rgba(184,134,11,0.1);border:1px dashed var(--gold);
+  border-radius:4px;font-size:0.78rem;color:var(--ink-light);
+  line-height:1.7;
+}
+.clue-unlock .clue-label{color:var(--gold);font-weight:700;margin-right:6px}
+
+/* ===== 答题 ===== */
+.quiz-section{padding:16px}
+.quiz-question{
+  font-size:1rem;font-weight:700;line-height:1.8;
+  margin-bottom:20px;padding:16px;
+  background:rgba(44,24,16,0.05);border-radius:6px;
+}
+.quiz-question .questioner{color:var(--red);font-size:0.85rem;display:block;margin-bottom:8px}
+.quiz-option{
+  display:block;width:100%;text-align:left;
+  padding:14px 18px;margin-bottom:10px;
+  background:rgba(255,250,235,0.9);
+  border:2px solid var(--border);border-radius:6px;
+  font-family:'Noto Serif SC',serif;font-size:0.9rem;
+  cursor:pointer;transition:all 0.2s;color:var(--ink);
+}
+.quiz-option:hover{border-color:var(--ink)}
+.quiz-option.correct{border-color:var(--green);background:rgba(45,74,62,0.1)}
+.quiz-option.wrong{border-color:var(--red);background:rgba(139,37,0,0.1)}
+.quiz-feedback{
+  display:none;margin-top:16px;padding:16px;
+  border-radius:6px;font-size:0.85rem;line-height:1.8;
+}
+.quiz-feedback.show{display:block;animation:fadeIn 0.4s}
+.quiz-feedback.correct{background:rgba(45,74,62,0.1);border:1px solid var(--green);color:var(--green)}
+.quiz-feedback.wrong{background:rgba(139,37,0,0.1);border:1px solid var(--red);color:var(--red)}
+
+/* ===== 印章 ===== */
+.stamp-reveal{
+  text-align:center;padding:40px 16px;
+}
+.stamp-reveal h3{font-size:1.1rem;margin-bottom:30px;letter-spacing:2px}
+.stamp-circle{
+  width:140px;height:140px;margin:0 auto 24px;
+  border:4px solid var(--red-bright);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;
+  color:var(--red-bright);font-weight:900;
+  transform:rotate(-8deg) scale(0);
+  opacity:0;
+  position:relative;
+  background:rgba(196,30,58,0.05);
+}
+.stamp-circle.show{animation:stampIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards}
+@keyframes stampIn{
+  0%{transform:rotate(-8deg) scale(3);opacity:0}
+  60%{transform:rotate(-8deg) scale(0.9);opacity:1}
+  100%{transform:rotate(-8deg) scale(1);opacity:1}
+}
+.stamp-circle::before{
+  content:'';position:absolute;inset:6px;
+  border:2px solid var(--red-bright);border-radius:50%;
+  opacity:0.5;
+}
+.stamp-name{font-size:1.3rem;letter-spacing:4px;writing-mode:vertical-rl;text-orientation:upright}
+.stamp-loc{font-size:0.65rem;margin-top:6px;letter-spacing:1px;opacity:0.8}
+.stamp-collection{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  padding:16px;
+}
+.stamp-item{
+  aspect-ratio:1;border:2px solid var(--border);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;font-size:0.7rem;color:var(--ink-light);
+  background:rgba(255,250,235,0.5);position:relative;
+}
+.stamp-item.earned{
+  border-color:var(--red-bright);color:var(--red-bright);
+  background:rgba(196,30,58,0.05);
+}
+.stamp-item.earned .stamp-item-name{font-weight:700}
+.stamp-item .stamp-item-icon{font-size:1.5rem;margin-bottom:4px;opacity:0.4}
+.stamp-item.earned .stamp-item-icon{opacity:1}
+
+/* ===== 终点 ===== */
+.ending-section{text-align:center;padding:30px 16px}
+.ending-title{font-size:1.6rem;font-weight:900;letter-spacing:4px;margin-bottom:16px}
+.ending-quote{
+  font-size:0.95rem;line-height:2.2;color:var(--ink-light);
+  padding:20px;margin:20px 0;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  font-style:italic;
+}
+.ending-stats{
+  display:flex;justify-content:center;gap:30px;margin:24px 0;
+}
+.ending-stats div{text-align:center}
+.ending-stats .stat-num{font-size:2rem;font-weight:900;color:var(--red);display:block}
+.ending-stats .stat-label{font-size:0.75rem;color:var(--ink-light)}
+
+/* ===== 历史后记 ===== */
+.postscript{
+  margin:16px;padding:16px;
+  background:rgba(45,74,62,0.06);
+  border:1px solid var(--green);border-radius:6px;
+  font-size:0.8rem;line-height:1.9;color:var(--ink-light);
+}
+.postscript h4{color:var(--green);font-size:0.85rem;margin-bottom:8px;letter-spacing:2px}
+
+/* ===== 底部操作栏 ===== */
+.action-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:90;
+  background:linear-gradient(0deg, var(--paper) 70%, transparent);
+  padding:12px 16px 16px;
+  display:flex;gap:10px;
+  max-width:480px;margin:0 auto;
+}
+.action-bar .btn{flex:1}
+
+/* ===== 响应式 ===== */
+@media(min-width:481px){
+  .app{box-shadow:0 0 40px var(--shadow);margin-top:10px;margin-bottom:10px;border-radius:8px;overflow:hidden}
+  .action-bar{position:sticky;bottom:0}
+}
+@media(max-width:360px){
+  .hero-title{font-size:1.8rem}
+  .node-content{padding:8px}
+  .node-name{font-size:0.8rem}
+}
+</style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<div class="topbar">
+  <div class="topbar-title"><span class="seal-icon">迁</span>九载十迁</div>
+  <div class="topbar-stamps">印章 <span class="count" id="stampCount">0</span>/6</div>
+</div>
+
+<div class="app">
+<!-- ===== 视图：首页 ===== -->
+<div class="view active" id="view-intro">
+  <div class="hero">
+    <div class="hero-title">九载十迁</div>
+    <div class="hero-subtitle">广东省立文理学院办学旧址研学</div>
+    <div class="hero-divider"></div>
+    <div class="hero-desc">
+      1939年至1945年，广东省立文理学院在战火中辗转迁徙十次，师生以树皮作黑板、煤油灯照译稿，在连州东陂西塘村留下了"探索真理之光，广播文化食粮"的精神火种。
+    </div>
+    <div class="hero-meta">
+      <div><span class="num">6</span>旧址点位</div>
+      <div><span class="num">90</span>分钟游览</div>
+      <div><span class="num">3</span>种命运</div>
+    </div>
+    <div class="hero-desc" style="font-size:0.8rem;margin-top:16px">
+      你将以"战时学生"的身份，沿固定动线游览六处旧址。每到一处，掷骰决定命运——紧急、平稳或奇遇；在历史人物的困境中做出你的选择；答对问题，收集属于你的精神印章。
+    </div>
+    <div class="btn-group" style="margin-top:24px">
+      <button class="btn btn-primary" onclick="startGame()">从西塘驿站出发</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 视图：动线地图 ===== -->
+<div class="view" id="view-map">
+  <div class="map-header">
+    <h2>游览动线</h2>
+    <p>沿六处旧址，重温九载十迁</p>
+  </div>
+  <div class="route-map" id="routeMap"></div>
+  <div style="padding:0 16px 80px">
+    <button class="btn btn-primary" id="mapActionBtn" onclick="enterCurrentLocation()">前往当前点位</button>
+  </div>
+</div>
+
+<!-- ===== 视图：场景 ===== -->
+<div class="view" id="view-scene">
+  <div class="scene-header">
+    <div class="scene-location" id="sceneLocation"></div>
+    <div class="scene-title" id="sceneTitle"></div>
+    <div class="scene-year" id="sceneYear"></div>
+  </div>
+  <div class="scene-bg"><span class="scene-bg-icon" id="sceneIcon"></span></div>
+  <div class="narration" id="sceneNarration"></div>
+  <div class="btn-group" style="padding:0 16px 80px">
+    <button class="btn btn-primary" id="sceneActionBtn" onclick="onSceneAction()">掷骰 · 决定命运</button>
+  </div>
+</div>
+
+<!-- ===== 视图：骰子结果 ===== -->
+<div class="view" id="view-dice">
+  <div class="dice-section">
+    <h3 id="diceTitle">命运之骰</h3>
+    <div class="dice-hint">1-2 紧急 · 3-4 平稳 · 5-6 奇遇</div>
+    <div class="dice-container">
+      <div class="dice" id="dice3d">
+        <div class="dice-face front">1</div>
+        <div class="dice-face back">6</div>
+        <div class="dice-face right">3</div>
+        <div class="dice-face left">4</div>
+        <div class="dice-face top">2</div>
+        <div class="dice-face bottom">5</div>
+      </div>
+    </div>
+    <div class="dice-result" id="diceResult">
+      <div class="result-type" id="resultType"></div>
+      <div class="result-text" id="resultText"></div>
+    </div>
+    <div class="btn-group" id="diceBtnGroup" style="display:none">
+      <button class="btn btn-primary" onclick="showBranch()">面对抉择</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 视图：分支选择 ===== -->
+<div class="view" id="view-branch">
+  <div class="branch-section">
+    <div class="branch-prompt" id="branchPrompt"></div>
+    <div id="branchChoices"></div>
+    <div class="choice-outcome" id="choiceOutcome"></div>
+    <div class="btn-group" id="branchBtnGroup" style="display:none">
+      <button class="btn btn-primary" onclick="showQuiz()">回答历史之问</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 视图：答题 ===== -->
+<div class="view" id="view-quiz">
+  <div class="quiz-section">
+    <div class="quiz-question" id="quizQuestion"></div>
+    <div id="quizOptions"></div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <div class="btn-group" id="quizBtnGroup" style="display:none">
+      <button class="btn btn-primary" onclick="showStamp()">领取印章</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 视图：印章 ===== -->
+<div class="view" id="view-stamp">
+  <div class="stamp-reveal">
+    <h3>打卡成功</h3>
+    <div class="stamp-circle" id="stampCircle">
+      <div class="stamp-name" id="stampName"></div>
+      <div class="stamp-loc" id="stampLoc"></div>
+    </div>
+    <div id="stampClue" class="clue-unlock" style="text-align:left;max-width:320px;margin:0 auto 20px"></div>
+    <div class="btn-group" style="max-width:320px;margin:0 auto">
+      <button class="btn" onclick="showCollection()">查看印章集</button>
+      <button class="btn btn-primary" onclick="nextLocation()">继续前行</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 视图：印章集 ===== -->
+<div class="view" id="view-collection">
+  <div class="map-header">
+    <h2>精神印章集</h2>
+    <p>每一枚印章，都是一段历史的回响</p>
+  </div>
+  <div class="stamp-collection" id="stampCollection"></div>
+  <div style="padding:0 16px 80px">
+    <button class="btn btn-primary" onclick="backToMap()">返回动线</button>
+  </div>
+</div>
+
+<!-- ===== 视图：终点 ===== -->
+<div class="view" id="view-ending">
+  <div class="ending-section">
+    <div class="ending-title">旅程终章</div>
+    <div class="ending-quote" id="endingQuote">
+      "民族抗日的烈火，炼出了我们这支青年军……<br>我们要探索真理之光，我们要广播文化食粮。"
+    </div>
+    <div class="ending-stats">
+      <div><span class="stat-num" id="endStamps">0</span><span class="stat-label">收集印章</span></div>
+      <div><span class="stat-num">6</span><span class="stat-label">走过点位</span></div>
+      <div><span class="stat-num" id="endChoices">0</span><span class="stat-label">历史抉择</span></div>
+    </div>
+    <div class="postscript" id="endingPostscript" style="text-align:left"></div>
+    <div class="btn-group" style="margin-top:24px">
+      <button class="btn" onclick="showCollection()">查看印章集</button>
+      <button class="btn btn-primary" onclick="restartGame()">重新启程</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /.app -->
+
+<script>
+// ===== 游戏数据：六处旧址完整微剧本 =====
+const LOCATIONS = [
+  {
+    id:0, name:"西塘驿站", subtitle:"起点 · 游客中心", year:"1940年秋",
+    icon:"🏛️", isStart:true,
+    scene:{
+      narration:`<span class="speaker">旁白</span>1940年，深秋。你背着简单的行囊，站在西塘驿站的门口。这里是广东省立文理学院迁来连县东陂后的第一站。<br><br>驿站的墙上贴着一张油印的告示，墨迹未干："本院师生已于本月抵达东陂西塘村，借祠堂民房复课。凡我同学，务须坚忍刻苦，共赴时艰。"<br><br><span class="speaker">林砺儒院长</span>（站在驿站台阶上，对新生讲话）："同学们，从梧州到藤县，从融县到乳源，我们走了三年。有人问我，为什么不在广州安安稳稳地教书？我说——因为日本人不让我们安稳。但他们越不让，我们越要教。"<br><br>"民族抗日的烈火，锻炼出了我们这支青年军。我们要探索真理之光，我们要广播文化食粮。哪怕魔高十丈，恶战千场。"`
+    }
+  },
+  {
+    id:1, name:"东茂祖厅", subtitle:"③ 时光长廊", year:"1940年深秋",
+    icon:"📖",
+    scene:{
+      narration:`<span class="speaker">旁白</span>你推开东茂祖厅的木门，看见郭大力教授伏在油灯下。他的手边是一摞厚厚的译稿。窗外传来飞机引擎的轰鸣。<br><br><span class="speaker">郭大力</span>（抬头看了你一眼）："同学，帮我把这摞稿纸按住。风太大了，吹散一页，就要重来三个晚上。"<br><br>你看着满桌密密麻麻的译文。<br><br><span class="speaker">你</span>："教授，外面这么危险……"<br><br><span class="speaker">郭大力</span>（停下笔）："1928年，我和王亚南约定，要把《资本论》完整地翻译给中国人看。1932年，第一卷译稿在淞沪炮火中烧成了灰。我等了六年，重新翻译了一遍。现在日本人又来了——他们炸一次，我就重译一次。"<br><br>（警报突然拉响，远处传来闷响）<br><br><span class="speaker">郭大力</span>（迅速将一摞译稿塞进你怀里）："拿着。跟我走。"`
+    },
+    dice:{
+      urgent:{type:"紧急", text:"爆炸声越来越近。郭教授拉着你往偏院跑——但院墙的阴影里，似乎有人影晃动。"},
+      calm:{type:"平稳", text:"警报暂时解除。郭教授松了一口气，把译稿重新摊开在桌上。"},
+      wonder:{type:"奇遇", text:"一个穿蓑衣的老乡从后门闪进来，塞给你一包东西：'东陂墟上的人让我带来的，说给教授补身子'。"}
+    },
+    branches:{
+      urgent:{
+        prompt:`<span class="speaker">郭大力</span>（压低声音）："偏院的地砖下面有个空隙，我们把译稿藏进去。但需要有人掩护——你选。"`,
+        choices:[
+          {label:"A", text:"教授，您先走，我来断后。",
+           outcome:"你抱着译稿冲进偏院，用柴草盖住洞口。回头时，郭大力站在院门口一动不动，仰头望着天空。",
+           stamp:"坚毅",
+           clue:"郭教授后来在连县继续翻译《剩余价值学说史》。"},
+          {label:"B", text:"不，我们一起走。译稿重要，您的命也重要。",
+           outcome:"你扶着郭大力绕到后山，在石洞里把译稿藏好。他靠在洞口，轻声说：'这些稿子，总有一天要印成书。'",
+           stamp:"真理火种",
+           clue:"石洞里的译稿，后来成为《资本论》首个中文全译本的底稿。"}
+        ]
+      },
+      calm:{
+        prompt:`<span class="speaker">郭大力</span>（摘下眼镜揉了揉眉心）："警报解除了。你既然来了，帮我看看这一页——这段德文，你觉得应该怎么译？"`,
+        choices:[
+          {label:"A", text:"教授，我不懂德文。但我觉得，翻译不只是字对字。",
+           outcome:"郭大力看了你一眼，第一次露出笑容：'你说对了。翻译是让中国人读懂真理。'",
+           stamp:"广播",
+           clue:"郭大力和王亚南合译时，经常为一个词争论一整个晚上。"},
+          {label:"B", text:"教授，您教我怎么查德文字典吧，我想学。",
+           outcome:"郭大力把一本翻烂的字典推到你面前：'拿去看。不懂的随时来问。'",
+           stamp:"求真",
+           clue:"这本字典后来被一位学生保存了几十年，捐给了华南师范大学。"}
+        ]
+      },
+      wonder:{
+        prompt:`<span class="speaker">老乡</span>（压低声音）："东陂墟上的人说了，明天可能扫荡。你们得赶紧走。"<br><br><span class="speaker">郭大力</span>（看着你）："译稿不能丢，但也不能带着走——太显眼。你说，怎么办？"`,
+        choices:[
+          {label:"A", text:"我把它埋在东茂祖厅后院的树底下，做个记号。",
+           outcome:"你们连夜在树下挖坑，用油布裹好译稿。郭大力在埋土前，在封面上写了一行字：'若我不归，后来者续之。'",
+           stamp:"坚守",
+           clue:"1944年文理学院撤离东陂后，当地村民自发保护了课桌和黑板。"},
+          {label:"B", text:"我带在身上，分批转移。您先撤，我走小路。",
+           outcome:"你把译稿分成三份，塞进不同的包袱。郭大力看着你，沉默了一会儿：'民族抗日的烈火，炼出了你们这支青年军。'",
+           stamp:"薪传",
+           clue:"林砺儒的这句寄语，后来被谱成校歌。"}
+        ]
+      }
+    },
+    quiz:{
+      questioner:"郭大力（郑重地）",
+      question:"最后一个问题，你答对了才能走。记住，无论发生什么，这些译文都会印成书。但我要问你——我们为什么要在战火中翻译这本书？",
+      options:[
+        "因为真理不灭，中国人需要知道真相。",
+        "因为我们要广播文化食粮。",
+        "以上都是。"
+      ],
+      answer:2,
+      feedback:"郭大力点点头，把译稿递给你：'记住这个答案。现在，走吧。'"
+    },
+    postscript:"郭大力教授在战火中坚持翻译《资本论》，三卷全译本于1938年首次出版。他和王亚南的合译本，是《资本论》第一个完整的中文全译本，影响了几代中国革命者。"
+  },
+  {
+    id:2, name:"陈氏宗祠", subtitle:"④ 岭学沙盘", year:"1940年冬",
+    icon:"🏮",
+    scene:{
+      narration:`<span class="speaker">旁白</span>1940年冬，连州东陂西塘村，陈氏宗祠。文史系课堂。黑板上写着四个大字——"民族抗日"。你是文史系二年级学生，先生刚讲完课，把粉笔搁在讲台上。<br><br><span class="speaker">先生</span>（拍了拍手上的粉笔灰）："今天的课就到这儿。不过——有件事，比上课重要。"<br><br>他从讲台下面拿出一摞油印的小册子，封面粗糙，油墨还带着湿气。<br><br><span class="speaker">先生</span>："东陂墟上的人，大多数不识字。他们不知道'中国'两个字怎么写，不知道日本人为什么要打过来。我们读的这些书，如果不拿出去，就只是纸。我打算在墟上办民众夜校，谁去？"<br><br>教室里安静了片刻。<br><br><span class="speaker">先生</span>（目光扫过全班）："不急，你们回去想想。明天早上告诉我。"`
+    },
+    dice:{
+      urgent:{type:"紧急", text:"第二天一早，你走到东陂墟上，发现夜校的屋子被一场大雨冲塌了半边，桌椅泡在水里。老乡们站在屋檐下看着你。"},
+      calm:{type:"平稳", text:"第二天一早，你到了东陂墟上。夜校设在墟口一间旧铺子里，已经来了七八个老乡，有老有少，坐在长条凳上等你。"},
+      wonder:{type:"奇遇", text:"第二天一早，你到了东陂墟上。一个穿蓑衣的老乡拦住你：'你们是文理学院的学生吧？我听说你们要教人识字——我家三个娃，能不能来？'"}
+    },
+    branches:{
+      urgent:{
+        prompt:`<span class="speaker">老乡</span>（蹲在屋檐下）："屋子塌了，今天还教不教？"`,
+        choices:[
+          {label:"A", text:"教。屋檐下也能上课。",
+           outcome:"你借了老乡几张矮凳，把油印册子摊在膝盖上，教他们在泥地上写'中国'两个字。一个老农用树枝在泥里划了半天，抬起头说：'我活了五十岁，今天第一次写自己的名字。'",
+           stamp:"广播",
+           clue:"东陂墟上的夜校，后来培养了一批农民积极分子，他们在解放战争时期连县东陂的武装起义中发挥了重要作用。"},
+          {label:"B", text:"今天先修屋子，明天再上课。",
+           outcome:"你和老乡们一起搬石头和泥、搭梁。天黑之前，半间屋子修好了。先生晚上来看了一眼，什么都没说，只是把油印册子放在修好的桌子上。",
+           stamp:"坚守",
+           clue:"文理学院的民众夜校在东陂坚持了两年，直到学院迁往曲江。"}
+        ]
+      },
+      calm:{
+        prompt:`<span class="speaker">一个老农</span>（看着油印册子上的字）："先生，这些字我认得几个——'中'、'国'。但这是什么意思？"`,
+        choices:[
+          {label:"A", text:"中国，就是我们脚下的这片土地。日本人在打我们，我们要守住它。",
+           outcome:"老农沉默了一会儿，把册子合上，揣进怀里。'我拿回去给娃看。'",
+           stamp:"薪火",
+           clue:"文理学院师生在东陂期间编印了大量通俗读物，用最朴素的文字向农民传播抗日思想。"},
+          {label:"B", text:"我教你写。你叫什么名字？",
+           outcome:"老农愣了一下，说：'陈阿福。'你握着他在泥地上写'陈阿福'三个字。他的手在抖，但写得一笔一画。",
+           stamp:"求真",
+           clue:"文理学院的夜校不仅教识字，还教算账、写信，很多农民第一次能给在外当兵的儿子写家书。"}
+        ]
+      },
+      wonder:{
+        prompt:`<span class="speaker">蓑衣老乡</span>（搓着手）："我家三个娃，大的十二，小的才六岁。你们教不教？"`,
+        choices:[
+          {label:"A", text:"教。明天带他们来，纸和笔我准备。",
+           outcome:"第二天，三个孩子坐在夜校最前排。最小的那个还不会握笔，你就把着她的手，在纸上画了一个'人'字。'这就是你，'你说，'堂堂正正做人。'",
+           stamp:"桃李",
+           clue:"抗战时期文理学院附小在东陂江夏村办学，许多当地孩子第一次走进课堂。"},
+          {label:"B", text:"六岁的太小了，先让大的来吧。",
+           outcome:"老乡有些失望，但还是把大孩子留下了。晚上你回到祠堂，心里总觉得缺了什么。先生看出了你的心思：'教育不是挑人，是等人。'",
+           stamp:"广播",
+           clue:"林砺儒倡导'全人格教育'，认为教育应该面向所有人，不分年龄和出身。"}
+        ]
+      }
+    },
+    quiz:{
+      questioner:"先生（晚上回到祠堂时）",
+      question:"今天墟上的事，我听说了。最后一个问题——我们办夜校，是为了什么？",
+      options:[
+        "为了让农民识字，方便以后找工作。",
+        "为了广播文化食粮，唤起民众一致抗日。",
+        "为了完成学校布置的社会教育任务。"
+      ],
+      answer:1,
+      feedback:"先生点点头，把一本新油印的册子递给你。'林院长说过，\"我们要广播文化食粮\"。粮食喂的是身子，文化喂的是脑子。都不饿着，这个国家才有希望。'"
+    },
+    postscript:"文理学院在东陂办学期间，师生以社会教育为手段，开办民众夜校、组织抗战宣传、编印通俗读物，唤起民众一致抗日。这些夜校培养的农民积极分子，后来在解放战争时期连县东陂的武装起义中发挥了重要作用。"
+  },
+  {
+    id:3, name:"伟臣公祠", subtitle:"⑥ 研学宿舍", year:"1941年春",
+    icon:"⚗️",
+    scene:{
+      narration:`<span class="speaker">旁白</span>1941年春，伟臣公祠的厢房，被改造成了简易实验室。没有实验台，几张旧课桌拼在一起。没有试管，桌上摆着几根竹筒和几个粗陶碗。你是数理化生系的学生，正在准备一个化学实验。导师站在旁边，手里捏着一片碎瓦片。<br><br><span class="speaker">导师</span>（把瓦片翻过来）："今天的实验，测酸碱度。没有pH试纸，没有玻璃试管。你们说说，用什么？"<br><br><span class="speaker">你</span>（看了看桌上的东西）："用……竹筒？还有这些瓦片？"<br><br><span class="speaker">导师</span>："瓦片内侧有一层釉，是碱性的。把它磨成粉，泡在水里，就能当简易指示剂。竹筒削开就是容器。当年我们在侯公渡的时候，连这个都没有，用树皮当滤纸。"`
+    },
+    dice:{
+      urgent:{type:"紧急", text:"实验做到一半，防空警报响了。导师一把抓起你的实验记录本：'笔记不能丢。器材可以重来，数据不能重来。'"},
+      calm:{type:"平稳", text:"实验顺利进行。导师看着你滴入指示剂后变色的竹筒水，难得地点了点头。"},
+      wonder:{type:"奇遇", text:"一个同学跑进来：'我在后山捡到一块奇怪的石头，你们看看这是什么？'那是一块带有明显层理的石灰岩。"}
+    },
+    branches:{
+      urgent:{
+        prompt:`<span class="speaker">导师</span>（抱着记录本往防空洞跑）："器材不要了！笔记和标本带上就行！"`,
+        choices:[
+          {label:"A", text:"导师，我把那几块岩石标本也带上。",
+           outcome:"你一手抱记录本，一手抓了两块标本，跑进防空洞。导师看了你一眼：'标本比器材重要。器材有钱就能买，标本是你自己走出来的。'",
+           stamp:"求真",
+           clue:"陈康学长当年就是在东陂附近徒步考察，收集了大量岩石标本，写成了毕业论文《东陂附近地质之研究》。"},
+          {label:"B", text:"器材太贵了，我把它藏到祠堂神龛后面。",
+           outcome:"你把竹筒和瓦片塞进神龛后面的缝隙里。警报解除后，东西一样没少。导师说：'在战火中保住实验器材，也是一种本事。'",
+           stamp:"坚守",
+           clue:"文理学院在九载十迁中，图书仪器均完整无损，在六所内迁粤北的高校中是唯一做到这一点的。"}
+        ]
+      },
+      calm:{
+        prompt:`<span class="speaker">导师</span>（看着变色的竹筒水）："颜色对了。但我想问你一个问题——你觉得，我们为什么要在什么都没有的地方做实验？"`,
+        choices:[
+          {label:"A", text:"因为实验本身就是学习，不管条件好坏。",
+           outcome:"导师摇了摇头：'不只是学习。是为了让你们将来走出这里的时候，不管在什么条件下，都能把知识用出来。'",
+           stamp:"广播",
+           clue:"文理学院的学生毕业后大多成为中学教师，把'在简陋条件下坚持教学'的精神带到了广东各地的课堂。"},
+          {label:"B", text:"因为陈康学长就是这样做的。他用东陂的石头写论文，我们也用东陂的材料做实验。",
+           outcome:"导师愣了一下，然后笑了。'你说到点子上了。学问不在实验室里，在脚下这片土地里。'",
+           stamp:"求实",
+           clue:"陈康的论文《东陂附近地质之研究》得到中央地质调查所黄汲清、杨钟健等学者的高度认可。"}
+        ]
+      },
+      wonder:{
+        prompt:`<span class="speaker">同学</span>（把石头递给你）："你看看这个，里面好像有东西。"`,
+        choices:[
+          {label:"A", text:"我们去后山看看，这块石头是从哪里捡的。",
+           outcome:"你和同学沿着后山的溪沟走了一个下午，发现了一处明显的石灰岩露头。导师后来据此写了一篇短文，发表在学院的学术壁报上。",
+           stamp:"求真",
+           clue:"陈康和同学陈泗桥曾沿着东陂至连山大掌岭徒步考察，写成了《连县东陂至连山大掌岭之沿途地质概况》。"},
+          {label:"B", text:"先做酸碱实验，石头的事等下课再说。",
+           outcome:"你把石头放在桌角，继续滴指示剂。下课后，导师拿起石头看了看，说：'这块石头比你刚才的实验有意思。下次别让它等。'",
+           stamp:"坚守",
+           clue:"伟臣公祠的角落里，至今还保留着一块当年学生刻着'东陂附近地质之研究'的木牌。"}
+        ]
+      }
+    },
+    quiz:{
+      questioner:"导师",
+      question:"最后一个问题。你在战火中做实验，在竹筒里测酸碱度——你觉得，这和前方打仗的士兵，有什么关系？",
+      options:[
+        "没有关系。学生读书，士兵打仗，各干各的。",
+        "我们用实验了解这片土地，就是在为将来战后重建做准备。",
+        "以上都不是。"
+      ],
+      answer:1,
+      feedback:"导师把瓦片放回桌上。'说得对。仗打完了，这片土地还要有人来建设。你们今天在竹筒里做实验，将来就是在真正的实验室里做。'"
+    },
+    postscript:"文理学院在东陂时期，学生规模仅二百余人，实行'短小精悍'的精英教育。一位学生用'质朴精壮'来形容文理学院学生的风貌——学风质实，体魄精壮，精神刚毅。陈康毕业后进入中央地质调查所工作，1944年在贵州地质考察中不幸遇难，年仅28岁。"
+  },
+  {
+    id:4, name:"五福公祠", subtitle:"⑳ 毕业照相馆", year:"1941年深秋",
+    icon:"📷",
+    scene:{
+      narration:`<span class="speaker">旁白</span>1941年深秋，五福公祠前。你是中文系应届毕业生。按照惯例，毕业班要在校本部前拍一张毕业照。但今年不一样——林砺儒院长刚被撤职，郭大力教授也走了。没有人有心情拍照。但班主任还是把大家召集到了五福公祠前。<br><br><span class="speaker">班主任</span>（看着大家沉默的脸）："都知道了吧。林院长走了，郭教授也走了。但学还是要上完，毕业照还是要拍。"<br><br><span class="speaker">你</span>（低声）："人都走了，拍出来有什么意思？"`
+    },
+    dice:{
+      urgent:{type:"紧急", text:"正要拍照，一个同学气喘吁吁跑过来：'学生自治会的电报被截了！教育厅派了人来查！'"},
+      calm:{type:"平稳", text:"天色阴沉，但没有警报。班主任搬了一把旧椅子放在五福公祠门前，说：'就站这儿拍。'"},
+      wonder:{type:"奇遇", text:"正要拍照，一个穿灰布长衫的人从祠堂侧门走出来——是林砺儒院长。他还没走，他是回来取最后一件行李的。"}
+    },
+    branches:{
+      urgent:{
+        prompt:`<span class="speaker">班主任</span>（把大家往祠堂里推）："先进去，别站在外面！"`,
+        choices:[
+          {label:"A", text:"老师，我们就在这儿拍。我们没有做什么见不得人的事。",
+           outcome:"全班在五福公祠前站定。没有人笑，但每个人都站得笔直。快门按下的那一刻，你想起了林院长最后一次站在讲台上的样子。",
+           stamp:"坚毅",
+           clue:"这张毕业照后来被收入文理学院第十二届毕业同学录，序言中写道：'翻开泛黄的档案页，抗日战争年代青年学生和高校学者坚持办学传承教育火种的毅然青春气息携字而来。'"},
+          {label:"B", text:"我们换个地方拍，不要让来查的人看见。",
+           outcome:"全班退到祠堂后院，在偏院的青砖墙前拍了照。照片里没有人笑，但照片背面，班主任写了一行字：'民国三十年秋，文理学院第十二届毕业生。是年，林院长离校。'",
+           stamp:"薪传",
+           clue:"1941年秋天，校歌在东陂的祠堂里第一次被唱响。"}
+        ]
+      },
+      calm:{
+        prompt:`<span class="speaker">班主任</span>（站在椅子旁边）："都站好。前排蹲下，后排站直。"`,
+        choices:[
+          {label:"A", text:"老师，您坐中间。没有您，我们拍不成这张照片。",
+           outcome:"班主任愣了一下，坐下了。快门按下的瞬间，他低头擦了擦眼角。",
+           stamp:"桃李",
+           clue:"文理学院的师生关系极为融洽，学生回忆'诸老师则因其所学，阐以奥义，导之轨范，于心至感忭快'。"},
+          {label:"B", text:"老师，我们想唱一遍校歌再拍。",
+           outcome:"全班站在五福公祠前，低声唱起了林砺儒作词的校歌：'走遍了险阻，历尽了艰辛，却淬砺了奋斗精神。'路过的老乡停下来听，有人跟着哼。",
+           stamp:"广播",
+           clue:"这首校歌的歌词后来成为华南师范大学'艰苦奋斗'校训精神的源头。"}
+        ]
+      },
+      wonder:{
+        prompt:`<span class="speaker">林砺儒</span>（站在侧门口，手里拎着一个旧皮箱）："你们在拍照？等我一下。"`,
+        choices:[
+          {label:"A", text:"院长，您一起来。",
+           outcome:"林砺儒放下皮箱，走到队伍中间。他没有坐椅子，站在后排，和大家一起。快门按下的那一刻，他说：'这张照片，替我留着。'",
+           stamp:"薪传",
+           clue:"林砺儒离校后，文理学院的中共地下党组织继续领导学生运动，坚持抗日民主。"},
+          {label:"B", text:"院长，您给我们写句话吧。",
+           outcome:"林砺儒从口袋里掏出一张纸，写了一行字：'民族抗日的烈火，炼出了我们这支青年军。'他把纸递给班主任，拎起皮箱走了。没有回头。",
+           stamp:"挽林",
+           clue:"1941年5月林砺儒离校后，学生自治会从连县打电报到曲江，请求挽留林院长，并拒绝任何人莅院接任。"}
+        ]
+      }
+    },
+    quiz:{
+      questioner:"班主任",
+      question:"拍完这张照片，你们就要各奔东西了。最后一个问题——这张没有礼堂、没有院长、没有像样背景的毕业照，你为什么要拍？",
+      options:[
+        "因为学校要求拍，不拍不能毕业。",
+        "为了记住，在战火中坚持读书的这段日子，是谁教出来的。",
+        "为了以后找工作方便。"
+      ],
+      answer:1,
+      feedback:"班主任把照片收进档案袋。'记住照片上这些人。不管以后走到哪里，你们都是从东陂走出去的。'"
+    },
+    postscript:"1941年林砺儒被迫离校后，文理学院的地下党组织继续领导学生运动，坚持抗日民主。1944年，学院从连县东陂迁往罗定榃濮，师生借庄园及村中的粮仓、炮楼、民房等零散建筑用作校舍。"
+  },
+  {
+    id:5, name:"炮火连天残墙", subtitle:"户外景观过渡点", year:"1944年秋",
+    icon:"🔥",
+    scene:{
+      narration:`<span class="speaker">旁白</span>1944年秋，连州东陂。局势骤然紧张，日军进犯粤北，学院接到紧急命令：立刻迁往罗定。你是一名大二学生，手里抱着仅有的几本书和一件换洗衣物。炮火连天的残墙下，师生们正在集合。远处传来闷响。<br><br><span class="speaker">训导员</span>（大声喊着）："快！快！能带的就带，带不走的全留下！人到齐了就出发！"<br><br><span class="speaker">你</span>（看着身边堆着的实验器材和书籍）："这些……都不要了吗？"<br><br><span class="speaker">一位老教授</span>（蹲在书堆旁，一本一本地翻着）："带不走的。从梧州到藤县，从融县到乳源，从乳源到东陂，每次都说'下次一定带走'，每次都带不走。但我得翻一遍，看看有没有哪本值得塞进包袱里。"`
+    },
+    dice:{
+      urgent:{type:"紧急", text:"炮声越来越近。训导员跑过来喊：'不能再等了！五分钟之后出发！'"},
+      calm:{type:"平稳", text:"队伍开始沿着西塘村的小路向东陂方向移动。天色暗下来了，有人点起了火把。"},
+      wonder:{type:"奇遇", text:"一个西塘村的老乡跑过来，手里提着一篮红薯：'带着路上吃。你们还会回来吧？'"}
+    },
+    branches:{
+      urgent:{
+        prompt:`<span class="speaker">老教授</span>（把三本书塞进怀里，站起来）："走吧。"`,
+        choices:[
+          {label:"A", text:"教授，您先走。我回去把祠堂的门锁好。",
+           outcome:"你跑回东茂祖厅，把门板合上，推上门闩。回头看了一眼那面写着'民族抗日'的黑板，然后转身跑回队伍。你知道这扇门可能再也锁不上了。但你也知道，门可以倒，门里的东西不会倒。",
+           stamp:"坚守",
+           clue:"文理学院撤离东陂后，当地村民自发保护了祠堂里的课桌和黑板。"},
+          {label:"B", text:"教授，那些仪器怎么办？",
+           outcome:"老教授停下脚步，看了看堆在墙角的竹筒和瓦片。'带不走的。但你要记住，仪器可以重做，学问不能丢。'",
+           stamp:"求真",
+           clue:"文理学院在九载十迁中，图书仪器均完整无损，在六所内迁粤北的高校中是唯一做到这一点的学院。"}
+        ]
+      },
+      calm:{
+        prompt:`<span class="speaker">一位同学</span>（低声）："我们这一走，什么时候能回来？"`,
+        choices:[
+          {label:"A", text:"不知道。但林院长说过，'广播文化食粮'，走到哪里就播到哪里。",
+           outcome:"同学点了点头，把一本书塞进包袱。火把的光映在残墙上，影子拉得很长。",
+           stamp:"广播",
+           clue:"文理学院在迁徙途中，学生用树皮作黑板，煤油灯下坚持上课。"},
+          {label:"B", text:"不管回不回来，我们走到哪里，文理学院就在哪里。",
+           outcome:"老教授听到了这句话，回头看了你一眼，没说话，但点了点头。",
+           stamp:"薪传",
+           clue:"文理学院在罗定榃濮借粮仓、炮楼、民房继续办学，在离办公地约50米的岗顶平地搭建简易课室。"}
+        ]
+      },
+      wonder:{
+        prompt:`<span class="speaker">老乡</span>（把红薯篮子塞给你）："你们还会回来吧？"`,
+        choices:[
+          {label:"A", text:"会回来的。但不是我们回来，是比我们更年轻的人回来。",
+           outcome:"老乡似懂非懂地点了点头。老教授在旁边听到了，说：'你说得对。我们这一代人走的路，是给下一代人铺的。'",
+           stamp:"播种",
+           clue:"1945年抗战胜利后，文理学院部分师生从罗定迁回广州光孝寺复课，1946年9月终于返回石榴岗原址。"},
+          {label:"B", text:"我不知道。但我会记住东陂，记住西塘村。",
+           outcome:"你把红薯分给身边的同学，最后看了一眼五福公祠的方向。",
+           stamp:"坚守",
+           clue:"西塘村的老人们一直记得，那些在炮火中坚持上课的年轻人。"}
+        ]
+      }
+    },
+    quiz:{
+      questioner:"老教授",
+      question:"走了这么多地方，从梧州到藤县，从融县到乳源，从乳源到东陂，现在又要去罗定。最后一个问题——我们为什么走了这么多地方，却一本书都没丢？",
+      options:[
+        "因为学校管得严，丢了要赔。",
+        "因为书在，文脉就在。人走到哪里，书就带到哪里。",
+        "因为书太重了，没人愿意背，所以没丢。"
+      ],
+      answer:1,
+      feedback:"老教授拍了拍你的肩膀。'记住这句话。以后你当了老师，也要告诉你的学生。'"
+    },
+    postscript:"文理学院在九载十迁中，图书仪器均完整无损，在六所内迁粤北的高校中，是唯一一所在迁徙中做到这一点的学院。1944年秋迁往罗定榃濮后，师生借粮仓、炮楼、民房继续办学，旧宅阴冷潮湿，仅能勉强遮蔽风雨，但师生仍坚持上课。"
+  },
+  {
+    id:6, name:"桃李园", subtitle:"⑮ 终点 · 挽林石", year:"1941年5月",
+    icon:"🌳", isEnd:true,
+    scene:{
+      narration:`<span class="speaker">旁白</span>1941年5月，东陂桃李园。学生们聚在园中，有人手里攥着连夜油印的传单，有人眼眶发红。远处，教育厅派来的督学正在和学院交接。你是中文系学生，手里攥着一份传单，上面印着学生自治会发给曲江的电报全文。<br><br><span class="speaker">学生自治会主席</span>（压低声音）："电报已经发到韶关了。'闻林院长请辞，谨请代为挽留。我们拒绝任何人莅院接任。'但上面的人根本不理会。"<br><br><span class="speaker">你</span>（看着手中的传单）："那我们还能做什么？电报发了，传单印了，请愿也去了……"<br><br><span class="speaker">学生自治会主席</span>："林院长今天下午就要走了。他想在走之前，和大家说几句话。"`
+    },
+    dice:{
+      urgent:{type:"紧急", text:"督学的人就在祠堂门口站着，盯着每一个进出的人。林院长走出来的时候，身后跟着两个穿中山装的人。"},
+      calm:{type:"平稳", text:"下午的阳光透过桃李园的树叶洒下来。林院长穿着一件洗得发白的灰布长衫，手里拿着一沓稿纸。"},
+      wonder:{type:"奇遇", text:"林院长从桃李园深处走出来，身后跟着几位教授。他停下脚步，看了看园子里的桃树和李树——那是学生们几年前种下的。"}
+    },
+    branches:{
+      urgent:{
+        prompt:`<span class="speaker">林砺儒</span>（声音平静，但每个字都掷地有声）："同学们。我在文理学院八年了。从梧州到藤县，从融县到乳源，再到东陂。你们跟着我，走过了九载十迁。"<br><br>督学的人往前迈了一步。`,
+        choices:[
+          {label:"A", text:"院长，我们不怕。您说。",
+           outcome:"林砺儒看了你一眼，继续说：'有人问我，值不值得。我说——\"民族抗日的烈火，炼出了我们这支青年军。\"我们走遍了险阻，历经了艰辛，但淬砺了奋斗的精神。同学们，挺起胸膛，放大眼孔。这是我们的校风，这是我们的大勇。'",
+           stamp:"薪传",
+           clue:"林砺儒的临别寄语后来被谱成校歌，1941年秋天在东陂的祠堂里第一次被唱响。"},
+          {label:"B", text:"院长，我们送您走。这里不安全。",
+           outcome:"你和其他几个同学护着林砺儒从桃李园后门离开。走到村口古桥边，他停下脚步，回头看了看祠堂的方向。'替我告诉大家，教育不是一个人的事。我走了，你们就是火种。'",
+           stamp:"火种",
+           clue:"林砺儒离校后，一大批进步教授也相继离开，但中共地下党组织继续领导学生运动。"}
+        ]
+      },
+      calm:{
+        prompt:`<span class="speaker">林砺儒</span>（环视在场的每一个人）："我走了，但你们还在。文理学院的根，不在我身上，在你们身上。"<br><br>有学生开始低声啜泣。`,
+        choices:[
+          {label:"A", text:"院长，我送您一程。我想听您讲完最后一堂课。",
+           outcome:"你陪着林砺儒走过东陂的石板路，一直送到村口的古桥边。他停下脚步，说：'若畏死不学，则华夏永无天明之日。这句话，你记住。'",
+           stamp:"挽林",
+           clue:"这句话后来被刻在文理学院旧址的展示牌上，成为研学课程的核心语录。"},
+          {label:"B", text:"院长，您给我们留句话吧。",
+           outcome:"林砺儒从口袋里掏出一张纸，上面是他连夜写下的诗：'民族抗日的烈火，炼出了我们这支青年军。走遍了险阻，历尽了艰辛，却淬砺了奋斗精神。'他把纸递给你，转身走了。",
+           stamp:"广播",
+           clue:"这首诗后来由黄友棣谱曲，成为文理学院校歌。歌词中的'走遍了险阻，历尽了艰辛'成为华南师范大学'艰苦奋斗'校训精神的源头。"}
+        ]
+      },
+      wonder:{
+        prompt:`<span class="speaker">林砺儒</span>（看着桃树和李树）："这些树，是你们种的吗？"<br><br><span class="speaker">你</span>："是。去年春天种的。您说，桃李满天下。"`,
+        choices:[
+          {label:"A", text:"院长，等桃子熟了，我们给您送过去。",
+           outcome:"林砺儒沉默了一会儿，说：'不用送。你们把书教好，把学生教好，就是给我最好的桃子。'",
+           stamp:"桃李",
+           clue:"林砺儒离校后，文理学院的中共地下党组织继续领导学生运动，坚持抗日民主。"},
+          {label:"B", text:"院长，我们记住了。您走后，我们会继续把书念下去。",
+           outcome:"林砺儒点了点头，把手中的稿纸递给你。'那就好。记住，我们是青年军。探索真理之光，广播文化食粮。哪怕魔高十丈，恶战千场。'",
+           stamp:"坚守",
+           clue:"林砺儒后来在桂林师范学院任教，继续传播进步思想。1941年秋天，校歌在东陂的祠堂里第一次被唱响。"}
+        ]
+      }
+    },
+    quiz:{
+      questioner:"林砺儒",
+      question:"最后一个问题。我走了，你们还会继续读书吗？",
+      options:[
+        "会。因为读书是为了考试。",
+        "会。因为我们要探索真理之光，广播文化食粮。",
+        "不会。院长都走了，读书还有什么用。"
+      ],
+      answer:1,
+      feedback:"林砺儒看了你很久，然后点了点头。'记住这句话。魔高十丈，恶战千场。我们不怕。'"
+    },
+    postscript:"林砺儒离校后，文理学院的地下党组织继续领导学生运动，坚持抗日民主。1941年秋天，校歌在东陂的祠堂里第一次被唱响，歌词中的'走遍了险阻，历尽了艰辛'后来成为华南师范大学'艰苦奋斗'校训精神的源头。"
+  }
+];
+
+// ===== 游戏状态 =====
+const state = {
+  currentLoc: 0,      // 当前点位索引
+  phase: 'intro',     // intro/map/scene/dice/branch/quiz/stamp/ending
+  diceValue: 0,       // 骰子点数
+  diceType: '',       // urgent/calm/wonder
+  choiceIdx: -1,      // 选择索引
+  stamps: [],         // 已获得印章 [{loc, name}]
+  choiceCount: 0,     // 做出的选择数
+  answered: false     // 是否已答题
+};
+
+// ===== 工具函数 =====
+function $(id){return document.getElementById(id)}
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function updateStampCount(){
+  $('stampCount').textContent = state.stamps.length;
+}
+
+// ===== 开始游戏 =====
+function startGame(){
+  state.currentLoc = 0;
+  state.phase = 'map';
+  renderMap();
+  showView('view-map');
+}
+
+// ===== 渲染动线地图 =====
+function renderMap(){
+  const map = $('routeMap');
+  map.innerHTML = '<div class="route-line"></div>';
+  LOCATIONS.forEach((loc,i)=>{
+    const node = document.createElement('div');
+    node.className = 'route-node';
+    if(i < state.currentLoc) node.classList.add('completed');
+    if(i === state.currentLoc) node.classList.add('current');
+    let statusText = '';
+    if(i < state.currentLoc) statusText = '已完成';
+    else if(i === state.currentLoc) statusText = '当前位置';
+    else statusText = '未到达';
+    node.innerHTML = `
+      <div class="node-dot">${i+1}</div>
+      <div class="node-content">
+        <div class="node-name">${loc.icon} ${loc.name}</div>
+        <div class="node-desc">${loc.subtitle}</div>
+        <div class="node-status">${statusText}</div>
+      </div>`;
+    map.appendChild(node);
+  });
+  // 更新按钮
+  const cur = LOCATIONS[state.currentLoc];
+  const btn = $('mapActionBtn');
+  if(cur.isStart){
+    btn.textContent = '进入 ' + cur.name;
+  } else if(cur.isEnd){
+    btn.textContent = '前往终点 ' + cur.name;
+  } else {
+    btn.textContent = '前往 ' + cur.name;
+  }
+}
+
+// ===== 进入当前点位 =====
+function enterCurrentLocation(){
+  const loc = LOCATIONS[state.currentLoc];
+  state.phase = 'scene';
+  state.diceValue = 0;
+  state.choiceIdx = -1;
+  state.answered = false;
+  $('sceneLocation').textContent = loc.subtitle;
+  $('sceneTitle').textContent = loc.name;
+  $('sceneYear').textContent = loc.year;
+  $('sceneIcon').textContent = loc.icon;
+  $('sceneNarration').innerHTML = loc.scene.narration;
+  // 根据点位类型设置按钮
+  const btn = $('sceneActionBtn');
+  if(loc.isStart){
+    btn.textContent = '前往东茂祖厅 · 开始研学';
+  } else {
+    btn.textContent = '掷骰 · 决定命运';
+  }
+  showView('view-scene');
+}
+
+// ===== 场景页动作 =====
+function onSceneAction(){
+  const loc = LOCATIONS[state.currentLoc];
+  if(loc.isStart){
+    nextLocation();
+  } else {
+    rollDice();
+  }
+}
+
+// ===== 掷骰子 =====
+function rollDice(){
+  state.phase = 'dice';
+  showView('view-dice');
+  const dice = $('dice3d');
+  const result = $('diceResult');
+  const btnGroup = $('diceBtnGroup');
+  result.classList.remove('show');
+  btnGroup.style.display = 'none';
+  $('diceTitle').textContent = '命运之骰';
+
+  // 随机点数
+  const value = Math.floor(Math.random()*6)+1;
+  state.diceValue = value;
+  if(value<=2) state.diceType = 'urgent';
+  else if(value<=4) state.diceType = 'calm';
+  else state.diceType = 'wonder';
+
+  // 骰子旋转动画
+  dice.classList.add('rolling');
+  const rotations = {
+    1: 'rotateX(0deg) rotateY(0deg)',
+    2: 'rotateX(-90deg) rotateY(0deg)',
+    3: 'rotateX(0deg) rotateY(-90deg)',
+    4: 'rotateX(0deg) rotateY(90deg)',
+    5: 'rotateX(90deg) rotateY(0deg)',
+    6: 'rotateX(180deg) rotateY(0deg)'
+  };
+  // 先多转几圈
+  const extraX = 360*3;
+  const extraY = 360*2;
+  dice.style.transform = `rotateX(${extraX}deg) rotateY(${extraY}deg)`;
+
+  setTimeout(()=>{
+    dice.classList.remove('rolling');
+    dice.style.transform = rotations[value];
+  }, 800);
+
+  // 显示结果
+  setTimeout(()=>{
+    const loc = LOCATIONS[state.currentLoc];
+    const diceData = loc.dice[state.diceType];
+    const typeEl = $('resultType');
+    typeEl.textContent = `掷出 ${value} 点 · ${diceData.type}`;
+    typeEl.className = 'result-type';
+    if(state.diceType==='urgent') typeEl.style.color = '#8b2500';
+    else if(state.diceType==='calm') typeEl.style.color = '#2d4a3e';
+    else typeEl.style.color = '#b8860b';
+    $('resultText').textContent = diceData.text;
+    result.classList.add('show');
+    btnGroup.style.display = 'flex';
+  }, 2000);
+}
+
+// ===== 显示分支选择 =====
+function showBranch(){
+  state.phase = 'branch';
+  showView('view-branch');
+  const loc = LOCATIONS[state.currentLoc];
+  const branch = loc.branches[state.diceType];
+  $('branchPrompt').innerHTML = branch.prompt;
+  const container = $('branchChoices');
+  container.innerHTML = '';
+  branch.choices.forEach((ch,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `<span class="choice-label">${ch.label}</span>${ch.text}`;
+    btn.onclick = ()=>makeChoice(i);
+    container.appendChild(btn);
+  });
+  $('choiceOutcome').classList.remove('show');
+  $('branchBtnGroup').style.display = 'none';
+}
+
+// ===== 做出选择 =====
+function makeChoice(idx){
+  state.choiceIdx = idx;
+  state.choiceCount++;
+  const loc = LOCATIONS[state.currentLoc];
+  const branch = loc.branches[state.diceType];
+  const choice = branch.choices[idx];
+  // 禁用所有按钮
+  document.querySelectorAll('.choice-btn').forEach((b,i)=>{
+    b.style.opacity = i===idx ? '1' : '0.5';
+    b.style.pointerEvents = 'none';
+    if(i===idx) b.style.borderColor = '#8b2500';
+  });
+  // 显示结果
+  const outcome = $('choiceOutcome');
+  outcome.innerHTML = `
+    <div>${choice.outcome}</div>
+    <div class="stamp-earned">获得【${choice.stamp}】印章</div>
+    <div class="clue-unlock"><span class="clue-label">历史线索</span>${choice.clue}</div>`;
+  outcome.classList.add('show');
+  // 记录印章（临时，答题后正式获得）
+  state.pendingStamp = choice.stamp;
+  $('branchBtnGroup').style.display = 'flex';
+}
+
+// ===== 显示答题 =====
+function showQuiz(){
+  state.phase = 'quiz';
+  showView('view-quiz');
+  const loc = LOCATIONS[state.currentLoc];
+  const quiz = loc.quiz;
+  $('quizQuestion').innerHTML = `<span class="questioner">${quiz.questioner}</span>${quiz.question}`;
+  const container = $('quizOptions');
+  container.innerHTML = '';
+  quiz.options.forEach((opt,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.textContent = `${String.fromCharCode(65+i)}. ${opt}`;
+    btn.onclick = ()=>answerQuiz(i);
+    container.appendChild(btn);
+  });
+  $('quizFeedback').classList.remove('show');
+  $('quizFeedback').className = 'quiz-feedback';
+  $('quizBtnGroup').style.display = 'none';
+}
+
+// ===== 答题 =====
+function answerQuiz(idx){
+  if(state.answered) return;
+  state.answered = true;
+  const loc = LOCATIONS[state.currentLoc];
+  const quiz = loc.quiz;
+  const buttons = document.querySelectorAll('.quiz-option');
+  buttons.forEach((b,i)=>{
+    b.style.pointerEvents = 'none';
+    if(i===quiz.answer) b.classList.add('correct');
+    if(i===idx && i!==quiz.answer) b.classList.add('wrong');
+  });
+  const fb = $('quizFeedback');
+  if(idx === quiz.answer){
+    fb.className = 'quiz-feedback correct show';
+    fb.innerHTML = `<strong>回答正确！</strong><br>${quiz.feedback}`;
+  } else {
+    fb.className = 'quiz-feedback wrong show';
+    fb.innerHTML = `<strong>回答有误，正确答案是 ${String.fromCharCode(65+quiz.answer)}。</strong><br>${quiz.feedback}<br><br>历史的答案，需要我们用心去理解。印章依然属于你——因为你已经走过了这段历史。`;
+  }
+  $('quizBtnGroup').style.display = 'flex';
+}
+
+// ===== 显示印章 =====
+function showStamp(){
+  state.phase = 'stamp';
+  showView('view-stamp');
+  const loc = LOCATIONS[state.currentLoc];
+  const stampName = state.pendingStamp || '研学';
+  // 正式记录印章
+  if(!state.stamps.find(s=>s.loc===state.currentLoc)){
+    state.stamps.push({loc:state.currentLoc, name:stampName});
+    updateStampCount();
+  }
+  $('stampName').textContent = stampName;
+  $('stampLoc').textContent = loc.name;
+  $('stampClue').innerHTML = `<span class="clue-label">历史后记</span>${loc.postscript}`;
+  // 印章动画
+  const circle = $('stampCircle');
+  circle.classList.remove('show');
+  setTimeout(()=>circle.classList.add('show'), 200);
+}
+
+// ===== 下一个点位 =====
+function nextLocation(){
+  state.currentLoc++;
+  if(state.currentLoc >= LOCATIONS.length){
+    showEnding();
+    return;
+  }
+  state.phase = 'map';
+  renderMap();
+  showView('view-map');
+}
+
+// ===== 印章集 =====
+function showCollection(){
+  showView('view-collection');
+  const container = $('stampCollection');
+  container.innerHTML = '';
+  LOCATIONS.forEach((loc,i)=>{
+    if(loc.isStart) return;
+    const earned = state.stamps.find(s=>s.loc===i);
+    const item = document.createElement('div');
+    item.className = 'stamp-item' + (earned?' earned':'');
+    item.innerHTML = `
+      <div class="stamp-item-icon">${earned?'🔖':'🔒'}</div>
+      <div class="stamp-item-name">${earned?earned.name:'未获得'}</div>
+      <div style="font-size:0.6rem;margin-top:2px;opacity:0.7">${loc.name}</div>`;
+    container.appendChild(item);
+  });
+}
+
+function backToMap(){
+  // 如果是从印章页过来，说明当前点位已完成，推进到下一个
+  if(state.phase==='stamp'){
+    state.currentLoc++;
+    if(state.currentLoc >= LOCATIONS.length){
+      showEnding();
+      return;
+    }
+  }
+  // 如果已经在终点，直接回终点页
+  if(state.phase==='ending' || state.currentLoc >= LOCATIONS.length){
+    showEnding();
+    return;
+  }
+  state.phase = 'map';
+  renderMap();
+  showView('view-map');
+}
+
+// ===== 终点 =====
+function showEnding(){
+  state.phase = 'ending';
+  showView('view-ending');
+  $('endStamps').textContent = state.stamps.length;
+  $('endChoices').textContent = state.choiceCount;
+  $('endingPostscript').innerHTML = `<h4>历史的回响</h4>九载十迁，文理学院师生在战火中坚守办学，图书仪器完整无损，成为六所内迁粤北高校中唯一做到这一点的学院。林砺儒的教育精神、郭大力的译稿、陈康的地质论文、夜校里农民写下的第一个字……这些都没有被炮火吞没。<br><br>今天，你走过了他们曾经走过的路。每一次掷骰，都是战乱无常的隐喻；每一次选择，都是先辈精神的回响；每一枚印章，都是你与历史的对话。`;
+}
+
+// ===== 重新开始 =====
+function restartGame(){
+  state.currentLoc = 0;
+  state.phase = 'intro';
+  state.stamps = [];
+  state.choiceCount = 0;
+  state.diceValue = 0;
+  state.choiceIdx = -1;
+  state.answered = false;
+  updateStampCount();
+  showView('view-intro');
+}
+
+// 初始化
+updateStampCount();
+</script>
+</body>
+</html>
